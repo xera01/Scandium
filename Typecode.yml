@@ -1,3 +1,76 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  apiToken: 'trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  apiToken: '8bBLgigxgRMWRhWTOmOLtvMIyurl6z'
+  projectId: '9cf60efb-c360-4f96-92df-64c5149243de'
+  suiteId: '9cf60efb-c360-4f96-92df-64c5149243de'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk'
+  inputs:
+    version: '3.x'
+
+- task: HttpRest@1
+  displayName: 'Make API call - Run E2E test suite'
+  inputs:
+    connectionType: 'connectedServiceNameARM'
+    connectedServiceNameSelector: 'ConnectedServiceName'
+    method: 'POST'
+    authentication: 'Basic'
+    customHeaders: |
+      Accept: application/json
+      Content-Type: application/json
+      x-api-token: $(apiToken)
+    endpoint: '<YOUR_SERVICE_CONNECTION_NAME>'  # Replace with the name of your service connection
+    urlSuffix: '/suites/execute'
+    body: |
+      {
+          "project_id": "$(projectId)",
+          "suite_id": "$(suiteId)",
+          "strategy": "await"
+      }
+'
+  projectId: '<PROJECT ID>'
+  suiteId: '<SUITE ID>'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk'
+  inputs:
+    version: '3.x'
+
+- task: HttpRest@1
+  displayName: 'Make API call - Run E2E test suite'
+  inputs:
+    connectionType: 'connectedServiceNameARM'
+    connectedServiceNameSelector: 'ConnectedServiceName'
+    method: 'POST'
+    authentication: 'Basic'
+    customHeaders: |
+      Accept: application/json
+      Content-Type: application/json
+      x-api-token: $(apiToken)
+    endpoint: '<YOUR_SERVICE_CONNECTION_NAME>'  # Replace with the name of your service connection
+    urlSuffix: '/suites/execute'
+    body: |
+      {
+          "project_id": "$(projectId)",
+          "suite_id": "$(suiteId)",
+          "strategy": "await"
+      }
+      
 # This is a basic workflow to help you get started with Actions
 
 name: CI with Scandium
